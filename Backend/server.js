@@ -1,7 +1,7 @@
 import http from "http"
 import app from "./app.js"
 import dotenv from "dotenv"
-import connectDB from "./db/db.js";
+import connectDB from "./Db/db.js"
 
 dotenv.config();
 connectDB();

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 const userSchema = new mongoose.Schema(
     {
-        fullName: {
+        fullname: {
             firstname :{
                 type:String,
                 required:true,
@@ -52,4 +52,5 @@ userSchema.methods.generateRefreshToken = async function(){
     return jwt.sign({ _id:this._id},process.env.REFRESH_TOKEN_SECRET);
 }
 
-export const User = mongoose.model("User",userSchema);
+ const User = mongoose.model("User",userSchema);
+ export default User;

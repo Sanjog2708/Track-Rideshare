@@ -1,4 +1,4 @@
-import express from "express"
+import express, { urlencoded } from "express"
 import cors from "cors"
 const app = express();
 
@@ -7,11 +7,12 @@ app.use(cors({
     credentials:true,
 }))
 
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
-app.get('/',(req,res)=>{
-    console.log("Bol Bhai");
-    res.status(201).json({"Hello" : "Sanjog"})
-})
+import userRouter from "./Routes/user.routes.js";
+app.use("/users",userRouter);
+
 
 
 export default app;
