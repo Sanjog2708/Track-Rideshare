@@ -83,3 +83,4 @@ The request body should be in JSON format and include the following fields:
     "message": "Something went wrong while creating the user"
   }
   ```
+  
