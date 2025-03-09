@@ -15,19 +15,45 @@ const registerUser = async (req,res,next)=>{
 
     const user = await createUser(firstname,lastname,email,password);
 
-    const createdUser = await userModel.findById(user._id).select("-socketId");
+    const createdUser = await userModel.findById(user._id).select("-socketId -password");
 
     if(!createdUser) {
         throw new ApiError(500,"Something went wrong while creating the user"); 
     }
 
-    const token = user.generateRefreshToken();
+    const token = await user.generateRefreshToken();
     next();
     return res.status(201).json(
         new ApiResponce(200,{createdUser,token},"User register Successfully")
     )
 }  
 
+const loginUser = async (req,res,next)=>{
+    const { email, password} = req.body;
+    const user = await userModel.findOne({email}).select("-socketId");
+    
+    if(!user) {
+        return res.status(401).json(
+            new ApiError(401,{},"Invalid email or password"))
+    }
+    const isMatch = user.isPasswordCorrect(password);
+
+    if(!isMatch) {
+        return res.status(401).json(
+            new ApiError(401,{},"Invalid email or password"))
+    }
+
+    next();
+
+    const token = await user.generateRefreshToken();
+
+    return res.status(201).json(
+        new ApiResponce(200,{user,token},"User login Successfully")
+    )
+
+}
 
 
-export {registerUser}
+
+
+export {registerUser,loginUser}

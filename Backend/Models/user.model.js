@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema(
         password: {
             type:String,
             required:[true,"Password is required"],
-            select:false,
         },
         socketId: {
             type:String,
@@ -49,7 +48,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
 }
 
 userSchema.methods.generateRefreshToken = async function(){
-    return jwt.sign({ _id:this._id},process.env.REFRESH_TOKEN_SECRET);
+    return await jwt.sign({ _id:this._id},process.env.REFRESH_TOKEN_SECRET);
 }
 
  const User = mongoose.model("User",userSchema);
