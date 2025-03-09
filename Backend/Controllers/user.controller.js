@@ -47,13 +47,25 @@ const loginUser = async (req,res,next)=>{
 
     const token = await user.generateRefreshToken();
 
+    res.cookie("token",token,{
+        httpOnly:false,
+        secure:true,
+    });
+    
+
     return res.status(201).json(
         new ApiResponce(200,{user,token},"User login Successfully")
     )
 
 }
 
+const getUserProfile = async (req,res,next)=>{
+    const user = req.user
+    return res.status(201).json(
+        new ApiResponce(200,{user},"User details fetch Successfully")
+    )
+}
 
 
 
-export {registerUser,loginUser}
+export {registerUser,loginUser,getUserProfile}

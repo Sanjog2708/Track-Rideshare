@@ -1,4 +1,3 @@
-
 # User Registration Endpoint
 
 ## Endpoint: `/users/register`
@@ -83,4 +82,150 @@ The request body should be in JSON format and include the following fields:
     "message": "Something went wrong while creating the user"
   }
   ```
-  
+
+# User Login Endpoint
+
+## Endpoint: `/users/login`
+
+### Method: POST
+
+### Description:
+This endpoint is used to log in an existing user. It requires the user's email and password.
+
+### Request Body:
+The request body should be in JSON format and include the following fields:
+- `email` (string, required): The email address of the user. Must be a valid email format.
+- `password` (string, required): The password for the user. Must be at least 3 characters long.
+
+### Example Request:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** User logged in successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 200,
+    "data": {
+      "user": {
+        "_id": "user_id",
+        "fullname": {
+          "firstname": "John",
+          "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      },
+      "token": "refresh_token"
+    },
+    "message": "User login Successfully"
+  }
+  ```
+
+#### Validation Errors:
+- **Status Code: 400**
+- **Description:** Validation errors for missing or invalid fields.
+- **Response Body:**
+  ```json
+  {
+    "status": 400,
+    "message": "All fields are required"
+  }
+  ```
+
+#### Unauthorized:
+- **Status Code: 401**
+- **Description:** Invalid email or password.
+- **Response Body:**
+  ```json
+  {
+    "status": 401,
+    "message": "Invalid email or password"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while logging in the user.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while logging in the user"
+  }
+  ```
+
+# User Profile Endpoint
+
+## Endpoint: `/users/profile`
+
+### Method: GET
+
+### Description:
+This endpoint is used to fetch the profile details of the authenticated user.
+
+### Headers:
+- `Authorization` (string, required): The Bearer token for the authenticated user.
+
+### Example Request:
+```
+GET /users/profile
+Authorization: Bearer <token>
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** User details fetched successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 200,
+    "data": {
+      "user": {
+        "_id": "user_id",
+        "fullname": {
+          "firstname": "John",
+          "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      }
+    },
+    "message": "User details fetch Successfully"
+  }
+  ```
+
+#### Unauthorized:
+- **Status Code: 401**
+- **Description:** Unauthorized access.
+- **Response Body:**
+  ```json
+  {
+    "status": 401,
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while fetching the user details.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while fetching the user details"
+  }
+  ```
+
