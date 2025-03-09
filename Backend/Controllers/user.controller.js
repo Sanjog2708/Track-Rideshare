@@ -1,8 +1,10 @@
 import userModel from "../Models/user.model.js"
+import BlacklistTokenModel from "../Models/blacklistTokens.model.js"
 import {ApiResponce} from "../utils/ApiResponce.js"
 import {ApiError} from "../Utils/ErrorResponce.js"
 import {createUser} from "../Services/user.services.js"
 import { validationResult } from "express-validator"
+
 
 const registerUser = async (req,res,next)=>{
     // const errors = validationResult(req);
@@ -66,6 +68,15 @@ const getUserProfile = async (req,res,next)=>{
     )
 }
 
+const logoutUser = async (req,res,next)=>{
+    const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+    res.clearCookie("token");
+    await BlacklistTokenModel.create({token});
+    return res.status(201).json(
+        new ApiResponce(200,{},"User logout Successfully")
+    )
+
+}
 
 
-export {registerUser,loginUser,getUserProfile}
+export {registerUser,loginUser,getUserProfile,logoutUser}
