@@ -229,3 +229,158 @@ Authorization: Bearer <token>
   }
   ```
 
+# User Logout Endpoint
+
+## Endpoint: `/users/logout`
+
+### Method: GET
+
+### Description:
+This endpoint is used to log out the authenticated user.
+
+### Headers:
+- `Authorization` (string, required): The Bearer token for the authenticated user.
+
+### Example Request:
+```
+GET /users/logout
+Authorization: Bearer <token>
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** User logged out successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 200,
+    "message": "User logout Successfully"
+  }
+  ```
+
+#### Unauthorized:
+- **Status Code: 401**
+- **Description:** Unauthorized access.
+- **Response Body:**
+  ```json
+  {
+    "status": 401,
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while logging out the user.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while logging out the user"
+  }
+  ```
+
+# Captain Registration Endpoint
+
+## Endpoint: `/captain/register`
+
+### Method: POST
+
+### Description:
+This endpoint is used to register a new captain. It requires the captain's first name, last name, email, password, and vehicle details.
+
+### Request Body:
+The request body should be in JSON format and include the following fields:
+- `firstname` (string, required): The first name of the captain. Must be at least 3 characters long.
+- `lastname` (string, required): The last name of the captain. Must be at least 3 characters long.
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain. Must be at least 3 characters long.
+- `vehicle` (object, required): The vehicle details of the captain.
+  - `color` (string, required): The color of the vehicle. Must be at least 3 characters long.
+  - `plate` (string, required): The plate number of the vehicle. Must be at least 4 characters long.
+  - `capacity` (number, required): The capacity of the vehicle. Must be at least 1.
+  - `vehicleType` (string, required): The type of the vehicle. Must be one of `car`, `motorcycle`, or `auto`.
+
+### Example Request:
+```json
+{
+  "firstname": "Jane",
+  "lastname": "Doe",
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC1234",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** Captain registered successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 201,
+    "data": {
+      "captain": {
+        "_id": "captain_id",
+        "fullname": {
+          "firstname": "Jane",
+          "lastname": "Doe"
+        },
+        "email": "jane.doe@example.com",
+        "vehicle": {
+          "color": "Red",
+          "plate": "ABC1234",
+          "capacity": 4,
+          "vehicleType": "car"
+        },
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      },
+      "token": "refresh_token"
+    },
+    "message": "Captain Created Successfully"
+  }
+  ```
+
+#### Validation Errors:
+- **Status Code: 400**
+- **Description:** Validation errors for missing or invalid fields.
+- **Response Body:**
+  ```json
+  {
+    "status": 400,
+    "message": "All fields are required"
+  }
+  ```
+
+#### Conflict:
+- **Status Code: 409**
+- **Description:** Captain with the provided email or username already exists.
+- **Response Body:**
+  ```json
+  {
+    "status": 409,
+    "message": "User with firstname or password already exists"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while creating the captain.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while creating the captain"
+  }
+  ```
+

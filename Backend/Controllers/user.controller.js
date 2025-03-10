@@ -9,7 +9,6 @@ import { validationResult } from "express-validator"
 const registerUser = async (req,res,next)=>{
     // const errors = validationResult(req);
     const {firstname,lastname,email,password } = req.body;
-    console.log(firstname,lastname,email,password)
     // if(!errors.isEmpty()) {
     //     throw new ApiError(401,"Please fill the valid data");
     // }
