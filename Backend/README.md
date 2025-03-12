@@ -284,7 +284,7 @@ Authorization: Bearer <token>
 
 # Captain Registration Endpoint
 
-## Endpoint: `/captain/register`
+## Endpoint: `/captains/register`
 
 ### Method: POST
 
@@ -381,6 +381,130 @@ The request body should be in JSON format and include the following fields:
   {
     "status": 500,
     "message": "Something went wrong while creating the captain"
+  }
+  ```
+
+# Captain Profile Endpoint
+
+## Endpoint: `/captains/profile`
+
+### Method: GET
+
+### Description:
+This endpoint is used to fetch the profile details of the authenticated captain.
+
+### Headers:
+- `Authorization` (string, required): The Bearer token for the authenticated captain.
+
+### Example Request:
+```
+GET /captains/profile
+Authorization: Bearer <token>
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** Captain details fetched successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 200,
+    "data": {
+      "captain": {
+        "_id": "captain_id",
+        "fullname": {
+          "firstname": "Jane",
+          "lastname": "Doe"
+        },
+        "email": "jane.doe@example.com",
+        "vehicle": {
+          "color": "Red",
+          "plate": "ABC1234",
+          "capacity": 4,
+          "vehicleType": "car"
+        },
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      }
+    },
+    "message": "Captain details fetch Successfully"
+  }
+  ```
+
+#### Unauthorized:
+- **Status Code: 401**
+- **Description:** Unauthorized access.
+- **Response Body:**
+  ```json
+  {
+    "status": 401,
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while fetching the captain details.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while fetching the captain details"
+  }
+  ```
+
+# Captain Logout Endpoint
+
+## Endpoint: `/captains/logout`
+
+### Method: GET
+
+### Description:
+This endpoint is used to log out the authenticated captain.
+
+### Headers:
+- `Authorization` (string, required): The Bearer token for the authenticated captain.
+
+### Example Request:
+```
+GET /captains/logout
+Authorization: Bearer <token>
+```
+
+### Responses:
+
+#### Success:
+- **Status Code: 201**
+- **Description:** Captain logged out successfully.
+- **Response Body:**
+  ```json
+  {
+    "status": 200,
+    "message": "Captain logout Successfully"
+  }
+  ```
+
+#### Unauthorized:
+- **Status Code: 401**
+- **Description:** Unauthorized access.
+- **Response Body:**
+  ```json
+  {
+    "status": 401,
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Internal Server Error:
+- **Status Code: 500**
+- **Description:** Something went wrong while logging out the captain.
+- **Response Body:**
+  ```json
+  {
+    "status": 500,
+    "message": "Something went wrong while logging out the captain"
   }
   ```
 

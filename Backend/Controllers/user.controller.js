@@ -37,7 +37,7 @@ const loginUser = async (req,res,next)=>{
         return res.status(401).json(
             new ApiError(401,{},"Invalid email or password"))
     }
-    const isMatch = user.isPasswordCorrect(password);
+    const isMatch = await user.isPasswordCorrect(password);
 
     if(!isMatch) {
         return res.status(401).json(
@@ -62,6 +62,7 @@ const loginUser = async (req,res,next)=>{
 
 const getUserProfile = async (req,res,next)=>{
     const user = req.user
+    next();
     return res.status(201).json(
         new ApiResponce(200,{user},"User details fetch Successfully")
     )
