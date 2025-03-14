@@ -1,29 +1,40 @@
-import React,{useState} from 'react'
-import { Link } from 'react-router-dom'
-
+import React,{use, useState} from 'react'
+import { Link,useNavigate } from 'react-router-dom'
+import axios from '../config/axios';
 const UserSignup = () => {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userData,setUserData] = useState({});
+  const [isError,setIsError] = useState(false);
+  const [message,setMessage] = useState('');
 
+  const navigate = useNavigate();
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = async (e)=>{
     e.preventDefault();
-    setUserData({
-      fullName:{
+    const newUser = {
+      fullname:{
         firstname:firstName,
         lastname:lastName,
       }, 
       email:email,
       password:password
-    });
+    };
+    axios.post(`/users/register`,newUser)
+    .then((res)=>{
+      navigate('/home')
+    })
+    .catch((err)=>{
+      setMessage(err.message);
+      setIsError(true);
+    })
     setEmail('');
     setFirstName('');
     setPassword('');
     setLastName('');
+    
   }
  
 
@@ -78,6 +89,9 @@ const UserSignup = () => {
             <button className='font-semibold  bg-blue-500 text-white px-14 py-2 rounded-lg'>Register</button>
 
             <Link to={'/login'} className='text-sm text-gray-400 text-center'>Already have an account? <span className='text-blue-400'>Sign in</span></Link>
+
+           {isError &&
+            <p className='text-sm text-red-500 text-center mt-2'>{message}</p>}
           </div>
 
       </div>

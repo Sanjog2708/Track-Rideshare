@@ -1,16 +1,26 @@
 import React,{useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import axios from '../config/axios';  
 
 const UserLogin = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
-  const [captainData,setCaptainData] = useState({});
 
+  const navigate = useNavigate();
   const handleSubmit = (e)=>{
     e.preventDefault();
-    setCaptainData({email : email,
-      password:password});
+    const loginUser = {
+      email : email,
+      password : password
+    }
+    axios.post("/users/login",loginUser)
+    .then((res)=>{
+      navigate("/home");
+    })
+    .catch((err)=>{
+      console.log("Please enter the correct information");
+    })
     setEmail('');
     setPassword('')
   }

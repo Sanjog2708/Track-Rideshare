@@ -6,15 +6,19 @@ import {createUser} from "../Services/user.services.js"
 import { validationResult } from "express-validator"
 
 
-const registerUser = async (req,res,next)=>{
+const registerUser = async (req,res)=>{
     // const errors = validationResult(req);
-    const {firstname,lastname,email,password } = req.body;
+    const {fullname,email,password } = req.body;
     // if(!errors.isEmpty()) {
     //     throw new ApiError(401,"Please fill the valid data");
     // }
 
-
-    const user = await createUser(firstname,lastname,email,password);
+    const user = await createUser({
+        firstname:fullname.firstname,
+        lastname:fullname.lastname,
+        email,
+        password
+    });
 
     const createdUser = await userModel.findById(user._id).select("-socketId -password");
 
@@ -23,14 +27,15 @@ const registerUser = async (req,res,next)=>{
     }
 
     const token = await user.generateRefreshToken();
-    next();
+   
     return res.status(201).json(
         new ApiResponce(200,{createdUser,token},"User register Successfully")
     )
 }  
 
-const loginUser = async (req,res,next)=>{
+const loginUser = async (req,res)=>{
     const { email, password} = req.body;
+
     const user = await userModel.findOne({email}).select("-socketId");
     
     if(!user) {
@@ -44,7 +49,6 @@ const loginUser = async (req,res,next)=>{
             new ApiError(401,{},"Invalid email or password"))
     }
 
-    next();
 
     const token = await user.generateRefreshToken();
 

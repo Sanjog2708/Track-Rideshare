@@ -1,18 +1,27 @@
 import React,{useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import axios from '../config/axios';
 
 const CaptainLogin = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
-  const [userData,setUserData] = useState({});
-
+  const navigate = useNavigate();
   const handleSubmit = (e)=>{
     e.preventDefault();
-    setUserData({email : email,
-      password:password});
+    const loginData = {
+      email : email,
+      password : password
+    }
+    axios.post("/captains/login",loginData)
+    .then((res)=>{
+      navigate("/home");
+    })
+    .catch((err)=>{
+      console.log("Please enter correct details");
+    })
     setEmail('');
-    setPassword('')
+    setPassword('');
   }
   return (
     <div className='p-7 bg-zinc-900 text-white h-screen flex flex-col gap-12'>
