@@ -1,13 +1,18 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from '../config/axios';  
+import { UserDataContext } from '../context/UserContext';
+import Cookies from "universal-cookie"
 
 const UserLogin = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
-
+  const {user,setUser} = useContext(UserDataContext);
   const navigate = useNavigate();
+  const cookies = new Cookies();
+
+
   const handleSubmit = (e)=>{
     e.preventDefault();
     const loginUser = {
@@ -16,6 +21,9 @@ const UserLogin = () => {
     }
     axios.post("/users/login",loginUser)
     .then((res)=>{
+      setUser(res.data.data.user);
+      const token = res.data.data.token;
+      cookies.set("accessToken", token, { path: "/" });
       navigate("/home");
     })
     .catch((err)=>{

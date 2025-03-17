@@ -52,14 +52,18 @@ const loginUser = async (req,res)=>{
 
     const token = await user.generateRefreshToken();
 
-    res.cookie("token",token,{
-        httpOnly:false,
+    res.cookie("haaaaa",token,{
         secure:true,
+        // httpOnly : true,
     });
     
 
     return res.status(201).json(
-        new ApiResponce(200,{user,token},"User login Successfully")
+        new ApiResponce(200,
+        {
+            user:user,token
+        },
+        "User login Successfully")
     )
 
 }
