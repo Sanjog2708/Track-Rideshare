@@ -4,7 +4,7 @@ import {ApiResponce} from "../utils/ApiResponce.js"
 import captainModel from "../Models/captain.model.js"
 import BlacklistToken from "../Models/blacklistTokens.model.js";
 
-const registerCaptain = async(req,res,next)=>{
+const registerCaptain = async(req,res,)=>{
 
     const {firstname,lastname,email,password,vehicle} = req.body;
     const captain = await createCaptain({
@@ -22,7 +22,6 @@ const registerCaptain = async(req,res,next)=>{
         throw new ApiError(501,"Something went wrong while creating the captain");
     }
     const token = await captain.generateRefreshToken();
-    next();
     res.status(201).json(
         new ApiResponce(201,{captain,token},"Captain Created Successfully")
     )

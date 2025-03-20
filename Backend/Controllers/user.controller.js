@@ -52,9 +52,9 @@ const loginUser = async (req,res)=>{
 
     const token = await user.generateRefreshToken();
 
-    res.cookie("haaaaa",token,{
+    res.cookie("token",token,{
         secure:true,
-        // httpOnly : true,
+        httpOnly :true,
     });
     
 
@@ -76,10 +76,15 @@ const getUserProfile = async (req,res,next)=>{
     )
 }
 
-const logoutUser = async (req,res,next)=>{
+const logoutUser = async (req,res)=>{
+
     const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
-    res.clearCookie("token");
+    // console.log(token);
+    res.clearCookie("token", {secure:true,
+        httpOnly :true});
+        
     await BlacklistTokenModel.create({token});
+
     return res.status(201).json(
         new ApiResponce(200,{},"User logout Successfully")
     )

@@ -1,16 +1,20 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {useNavigate, Link} from "react-router-dom"
 import {UserDataContext} from "../context/UserContext"
-
+import Cookies from "universal-cookie"
 
 const UserProtectedWrapper = ({children}) => {
 
+  const cookies = new Cookies();
   const {user} = useContext(UserDataContext);
   const navigate = useNavigate();
 
-  if(!user.email) {
-    navigate("/login");
-  }
+  useEffect(() => {
+    if(!cookies.get("accessToken")) {
+      navigate("/login");
+    }
+  },[cookies])
+  
 
   return (
     <>
